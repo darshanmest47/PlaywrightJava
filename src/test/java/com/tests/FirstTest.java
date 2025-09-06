@@ -1,12 +1,25 @@
 package com.tests;
 
+import base.BaseTest;
+import com.microsoft.playwright.Page;
+import com.microsoft.playwright.options.AriaRole;
 import org.testng.annotations.Test;
+
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 public class FirstTest extends BaseTest {
 
-    @Test(priority = 0)
-    public void firstTest() {
-        page.navigate("https://www.flipkart.com");
-        System.out.println(page.title());
+    @Test
+    public void test() {
+        page.navigate("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login");
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Username")).click();
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Username")).fill("Admin");
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Username")).press("Tab");
+        page.getByRole(AriaRole.TEXTBOX, new Page.GetByRoleOptions().setName("Password")).fill("admin123");
+        page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Login")).click();
+        page.navigate("https://opensource-demo.orangehrmlive.com/web/index.php/dashboard/index");
+        assertThat(page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Time"))).isVisible();
+        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Leave")).click();
+        page.navigate("https://opensource-demo.orangehrmlive.com/web/index.php/leave/viewLeaveList");
     }
 }
